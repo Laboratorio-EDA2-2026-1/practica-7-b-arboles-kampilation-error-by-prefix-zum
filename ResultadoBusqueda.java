@@ -1,6 +1,37 @@
 //Implementa aquí la operación de búsqueda. 
 //Pueden modificar la extensión del documento para que se ajuste al lenguaje de su elección y comentar estas instrucciones.
 //NOTA: Dado que las instrucciones no piden realizar todo el código, solo haremos lo necesario para que los métodos funcionen
+
+
+public class ResultadoBusqueda {
+    Nodo nodo;
+    int indice;
+
+    public ResultadoBusqueda(Nodo n, int i) {
+        this.nodo = n;
+        this.indice = i;
+    }
+}
+
+public ResultadoBusqueda buscar(int llave) {
+    return buscarRec(raiz, llave);
+}
+
+private ResultadoBusqueda buscarRec(Nodo x, int llave){
+    int i = 0;
+    while(i < x.n && llave > x.llaves.get(i)) i++;
+
+    if (i < x.n && llave == x.llaves.get(i)) {
+        return new ResultadoBusqueda(x, i); //Si encontramos a k dentro del nodo x, retornamos el nodo y el indice
+    }
+
+    if(x.hoja){
+        return null; //El nodo actual es hoja y no tiene hijos. No se puede buscar hacia abajo
+    }
+
+    return buscarRec(x.lista_hijos.get(i), llave);
+}
+
 public class Busqueda_B_Arboles{
     public int busquedaEnArbolB(Nodo x, int llave){
         int i;

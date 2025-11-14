@@ -35,40 +35,42 @@ public class Insercion_B_Arboles extends ArbolB{
     // Métodos complementarios para la inserción:
     public void divisionHijoArbolB(Nodo m, Nodo hijo, int k) {
         // Implementamos la división cuando ya no hay espacio en la raíz
-        Nodo aux2 = new Nodo(m.orden, m.hoja);
+        Nodo aux2 = new Nodo(m.orden, hijo.hoja);
         aux2.n = orden - 1;
 
-        for (int j = 0; j < aux2.n; j++) {
-            aux2.llaves.add(hijo.llaves.remove(orden + 1)); // Movimiento de separar las llaves
+        for(int j = 0; j < orden - 1; j++) {
+            aux2.llaves.add(hijo.llaves.remove(orden)); // Movimiento de separar las llaves
         }
 
-        if (!hijo.hoja) {
-            for (int j = 0; j < orden; j++) {
-                aux2.lista_hijos.add(hijo.lista_hijos.remove(orden + 1));
+        if(!hijo.hoja) {
+            for(int j = 0; j < orden; j++){
+                aux2.lista_hijos.add(hijo.lista_hijos.remove(orden));
             }
         }
 
+        int llaveMed = hijo.llaves.remove(orden-1);
+
         // Hacemos las conexiones correspondientes después de la división
-        m.llaves.add(k, hijo.llaves.remove(orden)); // Insertamos la llave del medio en el nodo padre
-        m.lista_hijos.add(k + 1, aux2);
-        m.n++; // Aumentamos el número de llaves
+        hijo.n = orden - 1;
+        m.llaves.add(k, llaveMed);
+        m.lista_hijos.add(k+1, aux2);
+        m.n++; // Aumentamos el numero de llaves
     }
 
     public void insertarArbolBNoLleno(Nodo x, int key) {
         // Este método sirve para insertar una llave en un árbol que aún tiene espacio en una hoja
         int p = x.n - 1;
 
-        if (x.hoja) {
-            x.llaves.add(0);
-            while (p >= 0 && key < x.llaves.get(p)) {
-                if (p + 1 < x.llaves.size()) {
-                    x.llaves.set(p + 1, x.llaves.get(p));
-                }
-                p--;
+        if(x.hoja){
+            int i = x.n - 1;
+            while (i >= 0 && key < x.llaves.get(i)) {
+                i--;
             }
-            x.llaves.set(p + 1, key);
+
+            x.llaves.add(i + 1, key);
             x.n++;
-        } else {
+        }
+        else{
             while (p >= 0 && key < x.llaves.get(p)) {
                 p--;
             }
@@ -77,7 +79,7 @@ public class Insercion_B_Arboles extends ArbolB{
             Nodo aux3 = x.lista_hijos.get(p);
             if (aux3.n == (2 * orden) - 1) {
                 // Si el hijo está lleno, se divide
-                divisionHijoArbolB(x, aux3, key);
+                divisionHijoArbolB(x, aux3, p);
 
                 if (key > x.llaves.get(p)) {
                     p++;
@@ -91,7 +93,7 @@ public class Insercion_B_Arboles extends ArbolB{
 //Metodo main
     public static void main(String[] args) {
         // Creamos el árbol B con orden 3 (cada nodo puede tener máximo 5 llaves)
-        Insercion_B_Arboles arbol = new Insercion_B_Arboles(3);
+        ArbolB arbol = new ArbolB(3);
 
         //Habria que insertar varios valores para que funcione el arbol.
         int[] arreglito = {8, 9, 10, 11, 15, 20, 17};

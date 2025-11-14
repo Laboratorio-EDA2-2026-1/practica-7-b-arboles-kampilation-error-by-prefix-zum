@@ -99,7 +99,7 @@ public class Eliminacion_B_Arboles extends ArbolB {
         Nodo hermano = m.lista_hijos.get(indice + 1);
 
         // Insertar la llave del m (padre)
-        hijo.llaves.add(orden - 1, m.llaves.get(indice));
+        hijo.llaves.add(m.llaves.get(indice));
         // Mover llaves del hermano
         hijo.llaves.addAll(hermano.llaves);
         if (!hermano.hoja) {
@@ -115,10 +115,35 @@ public class Eliminacion_B_Arboles extends ArbolB {
 
     private void prestamoIzquierdo(Nodo m, int indice) {
         // Implementar pedir prestado del hermano izquierdo del nodo.
-        //Nota: Desconocemos como realizar la implementación de este método.
+        Nodo hijo = m.lista_hijos.get(indice);
+        Nodo hermanoIzq = m.lista_hijos.get(indice - 1);
+
+        hijo.llaves.add(0, m.llaves.get(indice - 1));
+
+        m.llaves.set(indice - 1, hermanoIzq.llaves.remove(hermanoIzq.n - 1));
+
+        if (!hermanoIzq.hoja) {
+            hijo.lista_hijos.add(0, hermanoIzq.lista_hijos.remove(hermanoIzq.n));
+        }
+
+        hijo.n++;
+        hermanoIzq.n--;
     }
 
     private void prestamoDerecho(Nodo m, int indice) {
         // Implementar pedir prestado del hermano derecho
+        Nodo hijo = m.lista_hijos.get(indice);
+        Nodo hermanoDer = m.lista_hijos.get(indice + 1);
+
+        hijo.llaves.add(m.llaves.get(indice));
+
+        m.llaves.set(indice, hermanoDer.llaves.remove(0));
+
+        if (!hermanoDer.hoja) {
+            hijo.lista_hijos.add(hermanoDer.lista_hijos.remove(0));
+        }
+
+        hijo.n++;
+        hermanoDer.n--;
     }
 }
